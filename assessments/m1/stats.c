@@ -9,13 +9,11 @@
  *
  *****************************************************************************/
 /**
- * @file <Add File Name> 
- * @brief <Add Brief Description Here >
+ * @file stats.h
+ * @brief Preforms statistical operations on an array of numbers
  *
- * <Add Extended Description Here>
- *
- * @author <Add FirsName LastName>
- * @date <Add date >
+ * @author Duncan MacDonald
+ * @date Oct 4, 2018
  *
  */
 
@@ -27,7 +25,7 @@
 /* Size of the Data Set */
 #define SIZE (40)
 
-void main() {
+int main() {
 
   unsigned char test[SIZE] = { 34, 201, 190, 154,   8, 194,   2,   6,
                               114, 88,   45,  76, 123,  87,  25,  23,
@@ -37,7 +35,89 @@ void main() {
 
   /* Other Variable Declarations Go Here */
   /* Statistics and Printing Functions Go Here */
+  sort_array(test, SIZE);
+  print_array(test, SIZE);
 
+  print_statistics(test, SIZE);
+
+  return 0;
 }
 
-/* Add other Implementation File Code Here */
+void print_statistics(unsigned char *data, int length) {
+  printf("Maximum: %i\n", find_maximum(data, length));
+  printf("Minimum: %i\n", find_minimum(data, length));
+  printf("Median: %i\n", find_median(data, length));
+  printf("Mean: %i\n", find_mean(data, length));
+}
+
+void print_array(unsigned char *data, int length) {
+  // iterate over every index in data and print contents (with formatting)
+  printf("[");
+  for (int i = 0; i < length; i++) {
+    if (i == length - 1) {
+      printf("%i]\n", data[i]);
+    } else {
+      printf("%i, ", data[i]);
+    }
+  }
+  printf("--------------\n");
+}
+
+unsigned char find_median(unsigned char *data, int length) {
+  if (length % 2 == 0) {
+    unsigned char mid_index = length / 2;
+
+    return data[mid_index];
+  }
+  
+  unsigned char mid_left = (length - 1) / 2;
+  unsigned char mid_right = (length + 1) / 2;
+
+  return (data[mid_left] + data[mid_right]) / 2;
+}
+
+unsigned char find_mean(unsigned char *data, int length) {
+  int sum = 0;
+
+  for (int i = 0; i < length; i++) {
+    sum += data[i];
+  }
+
+  return sum / length;
+}
+
+unsigned char find_maximum(unsigned char *data, int length) {
+  unsigned char maximum = data[0];
+
+  for (int i = 0; i < length; i++) {
+    if (data[i] > maximum) {
+      maximum = data[i];
+    }
+  }
+
+  return maximum;
+}
+
+unsigned char find_minimum(unsigned char *data, int length) {
+  unsigned char minimum = data[0];
+
+  for (int i = 0; i < length; i++) {
+    if (data[i] < minimum) {
+      minimum = data[i];
+    }
+  }
+
+  return minimum;
+}
+
+void sort_array(unsigned char *data, int length) {
+  for (int i = 0; i < length; i++) {
+    for (int j = 0; j < length; j++) {
+      if (data[i] < data[j]) {
+        unsigned char tmp = data[i];
+        data[i] = data[j];
+        data[j] = tmp;
+      }
+    }
+  }
+}
